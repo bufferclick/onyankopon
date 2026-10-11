@@ -1,0 +1,15 @@
+{
+  "name": "狐の悪魔 — Kitsuna no Akuma",
+  "short_name": "Kitsuna",
+  "description": "An open-world action RPG. You signed a contract with the Fox Devil. Now become the strongest.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0b0708",
+  "theme_color": "#0d0a0c",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

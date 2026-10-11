@@ -1,0 +1,48 @@
+name: Windows installer
+
+# Builds the desktop app on a real Windows runner and publishes the NSIS
+# installer (.exe) as a release asset. Also uploads the unpacked app so the
+# artefact is downloadable on every push.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Package installer + portable
+        run: npx electron-builder --win --x64 --publish=never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect artefacts
+        shell: bash
+        run: |
+          mkdir -p out
+          cp release/*.exe out/ || true
+          cp release/*.yml out/ || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kitsuna-windows-installer
+          path: out/*
+
+      - name: Attach installer to the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.exe
