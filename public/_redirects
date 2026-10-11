@@ -1,0 +1,3 @@
+# Single-page shell: the renderer owns routing, Cloudflare just hands back
+# index.html for anything that is not a real file.
+/*    /index.html   200

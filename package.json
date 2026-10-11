@@ -1,0 +1,40 @@
+{
+  "name": "kitsuna-no-akuma",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kitsuna no Akuma \u2014 an open-world 3D action RPG about a contract with the Fox Devil.",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "assets": "node tools/fetch-assets.mjs",
+    "audio": "node tools/fetch-assets.mjs",
+    "predev": "node tools/ensure-assets.mjs",
+    "electron:start": "node electron/build-desktop.mjs --start",
+    "desktop": "node electron/build-desktop.mjs --build",
+    "installer:win": "node electron/build-desktop.mjs --build --platform win",
+    "test": "node tools/smoke-test.mjs && node tools/check-settings.mjs && node tools/headless-run.mjs --frames 400 && node tools/ui-run.mjs",
+    "prebuild": "node tools/ensure-assets.mjs",
+    "lint": "node tools/smoke-test.mjs",
+    "test:quick": "node tools/smoke-test.mjs && node tools/check-settings.mjs",
+    "headless": "node tools/headless-run.mjs",
+    "ui": "node tools/ui-run.mjs",
+    "icons": "node tools/make-icons.mjs && node tools/make-installer-art.mjs",
+    "desktop:win": "node electron/build-desktop.mjs --build --platform win",
+    "desktop:dir": "node electron/build-desktop.mjs --build --dir",
+    "electron:dev": "node electron/build-desktop.mjs --start",
+    "check:audio": "node tools/check-audio.mjs"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "jsdom": "^30.1.2",
+    "makensis": "^3.0.6",
+    "vite": "^6.0.0"
+  }
+}

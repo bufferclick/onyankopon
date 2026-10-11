@@ -1,0 +1,89 @@
+# electron-builder config — `npm run desktop` / `npm run installer:win`
+appId: dev.onyankopon.kitsuna
+productName: Kitsuna no Akuma
+copyright: Copyright © 2025 — Fox Devil contract, terms apply
+artifactName: '${productName}-${version}-${platform}-${arch}.${ext}'
+
+directories:
+  output: release
+  buildResources: resources
+  app: .            # package.json + dist/ + electron/ get picked up by files:
+
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+  - '!**/*.map'
+  - '!src/**'
+  - '!tools/**'
+  - '!art/**'
+  - '!release/**'
+  - '!.github/**'
+  - '!public/assets/**'   # re-downloaded by `npm run assets`; keep the installer small
+extraResources:
+  - from: public/assets
+    to: assets
+    filter: ['**/*']
+
+compression: maximum
+removePackageScripts: true
+asar: true
+npmRebuild: false
+electronLanguages: [en-US]
+
+# ── Windows: NSIS installer + portable exe ────────────────────────────────
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: resources/icon.ico
+  requestedExecutionLevel: asInvoker
+  legalTrademarks: 'Kitsuna no Akuma'
+
+nsis:
+  oneClick: false                        # let people choose the install folder
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: 'Kitsuna no Akuma'
+  menuCategory: Games
+  installerLanguages: [en_US, ja_JP]
+  language: '1033'
+  displayLanguageSelector: true
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false
+  artifactName: '${productName}-Setup-${version}.${ext}'
+  uninstallDisplayName: '${productName} ${version}'
+  # the fox seal, painted into the installer chrome
+  installerHeaderIcon: resources/icon.ico
+  installerHeader: resources/nsis-header.bmp
+  installerSidebar: resources/nsis-sidebar.bmp
+  uninstallerSidebar: resources/nsis-sidebar.bmp
+  welcomePage: true
+
+portable:
+  artifactName: '${productName}-${version}-portable.${ext}'
+  requestExecutionLevel: user
+  splashImage: resources/installer-splash.bmp
+
+# ── Linux: AppImage (the same source builds it) ───────────────────────────
+linux:
+  target: [AppImage]
+  category: Game
+  icon: resources/icon.png
+  executableName: kitsuna-no-akuma
+
+mac:
+  target: [dmg]
+  category: public.app-category.role-playing-games
+  icon: resources/icon.png
+  darkModeSupport: true
+
+publish:
+  provider: github
+  owner: bufferclick
+  repo: onyankopon

@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cloudflare Pages configuration for Kitsuna no Akuma.
+#
+# Two supported paths:
+#   1. Git integration   — Cloudflare builds on push with
+#                          build command:   npm run build
+#                          output dir:      dist
+#   2. Direct upload     — npx wrangler pages deploy dist --project-name=…
+#                          (this file is then the source of truth)
+# ─────────────────────────────────────────────────────────────────────────────
+name = "kitsuna-no-akuma"
+compatibility_date = "2025-04-01"
+pages_build_output_dir = "dist"
+
+# The game ships model + audio bundles that must never be re-zipped on the fly.
+# (Cloudflare already serves brotli/gzip; we just pin long immutability via
+# public/_headers for the hashed build output and the asset bundle.)
+[build]
+command = "npm run build"
+cwd = "."
+
+[env.preview]
+vars = { ENVIRONMENT = "preview", ASSET_BASE = "assets/" }
+
+[env.production]
+vars = { ENVIRONMENT = "production", ASSET_BASE = "assets/" }
+
+# Wrangler also drives `wrangler pages dev` for a local, edge-accurate preview:
+#   npx wrangler pages dev dist --port 8788
+[dev]
+port = 8788
